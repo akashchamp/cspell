@@ -936,6 +936,105 @@ Related: #8975, streetsidesoftware/vscode-spell-checker#3099, streetsidesoftware
 
 </details>
 
+## v10.4.1 (2026-10-22)
+
+### Fixes
+
+<details>
+<summary>fix: Show "stdin" as the file name when checking stdin (<a href="https://github.com/streetsidesoftware/cspell/pull/9487">#9487</a>)</summary>
+
+### fix: Show "stdin" as the file name when checking stdin ([#9487](https://github.com/streetsidesoftware/cspell/pull/9487))
+
+## Summary
+
+When `cspell lint` checks text from `stdin`, the issues it reports now name the file `stdin`. Before, the file name was empty.
+
+This applies to `cspell lint stdin`, `cspell lint --file stdin`, and `cspell lint stdin://`. With `stdin://<path>`, the issues still show `<path>`.
+
+Before:
+
+```text
+$ echo 'const recieve = 1;' | cspell lint --no-progress --file stdin
+:1:7 - Unknown word (recieve) fix: (receive)
+```
+
+After:
+
+```text
+$ echo 'const recieve = 1;' | cspell lint --no-progress --file stdin
+stdin:1:7 - Unknown word (recieve) fix: (receive)
+```
+
+With `--no-relative`, the name is also `stdin`, instead of a `stdin:` URL that points to the current folder.
+
+---
+
+</details>
+
+<details>
+<summary>fix: Recognize Fortran source files (<a href="https://github.com/streetsidesoftware/cspell/pull/9490">#9490</a>)</summary>
+
+### fix: Recognize Fortran source files ([#9490](https://github.com/streetsidesoftware/cspell/pull/9490))
+
+## Summary
+
+cspell now recognizes Fortran source files. Each one gets the file type `fortran`, plus `FortranFreeForm` or `FortranFixedForm`, the language IDs used by the Modern Fortran extension for VS Code. Settings and dictionaries can now target Fortran files.
+
+## Feature
+
+| File type          | Extensions                                                                            |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| `fortran`          | all of the extensions below                                                           |
+| `FortranFreeForm`  | `.f90`, `.f95`, `.f03`, `.f08`, `.f18`, `.fpp`, `.fypp`, `.pf`, `.cuf` (CUDA Fortran) |
+| `FortranFixedForm` | `.f`, `.f77`, `.for`, `.ftn`                                                          |
+
+Uppercase extensions, such as `.F90`, match too.
+
+Use `fortran` to match both forms:
+
+```json
+{
+  "languageSettings": [
+    {
+      "languageId": "fortran",
+      "words": ["gfortran", "nvfortran"]
+    }
+  ]
+}
+```
+
+To match a Fortran file opened in VS Code, list the VS Code IDs too: `"languageId": "fortran,FortranFreeForm,FortranFixedForm"`.
+
+---
+
+</details>
+
+### Dictionary Updates
+
+<details>
+<summary>fix: Workflow Bot -- Update Dictionaries (main) (<a href="https://github.com/streetsidesoftware/cspell/pull/9494">#9494</a>)</summary>
+
+### fix: Workflow Bot -- Update Dictionaries (main) ([#9494](https://github.com/streetsidesoftware/cspell/pull/9494))
+
+# Update Dictionaries (main)
+
+## Summary
+
+```
+ .../MicrosoftDocs/PowerShell-Docs/report.yaml      | 37 ++++++++++------------
+ .../MicrosoftDocs/PowerShell-Docs/snapshot.txt     |  7 +---
+ .../snapshots/php/php-src/report.yaml              |  6 +---
+ .../snapshots/php/php-src/snapshot.txt             | 14 +++-----
+ packages/cspell-bundled-dicts/package.json         |  8 ++---
+ packages/cspell/src/__snapshots__/app.test.ts.snap | 12 ++++---
+ pnpm-lock.yaml                                     | 37 +++++++++++++++-------
+ 7 files changed, 61 insertions(+), 60 deletions(-)
+```
+
+---
+
+</details>
+
 ## v10.4.0 (2026-10-14)
 
 ### Features
